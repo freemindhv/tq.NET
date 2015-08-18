@@ -8,8 +8,7 @@ namespace tq.NET {
     class Program {
         static void Main(string[] args) {
 
-            var parser = new ArgParser();
-            List<Query> queries = parser.parse(args);
+            List<Query> queries = ArgParser.parse(args);
 
             foreach (var query in queries) {
                 var streams = query.get_streamlist();

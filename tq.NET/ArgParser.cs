@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace tq.NET {
     class ArgParser {
-        public List<Query> parse(string[] args) {
+        public static List<Query> parse(string[] args) {
             string arg;
             var querylist = new List<Query>();
 
@@ -18,10 +18,12 @@ namespace tq.NET {
                 else {
                     arg = args[i];
                 }
-                if (arg == "/F")
+                if (arg == "/F") {
                     querylist.Add(new FeaturedStream());
-                if(arg == "/T")
+                }
+                else if (arg == "/T") {
                     querylist.Add(new TopGame());
+                }
             }
             return querylist;
         }

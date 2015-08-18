@@ -9,19 +9,17 @@ using Newtonsoft.Json;
 
 namespace tq.NET {
     class Query {
-        protected string baseURL;
         protected string queryoptions;
+        public static HttpClient client = new HttpClient();
 
         public Query() {
-            this.baseURL = "https://api.twitch.tv/kraken/";
-        }
-        protected Newtonsoft.Json.Linq.JObject get_json() {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(this.baseURL);
+            client.BaseAddress = new Uri("https://api.twitch.tv/kraken/");
             client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/vnd.twitchtv.v3+json"));
+    new MediaTypeWithQualityHeaderValue("application/vnd.twitchtv.v3+json"));
             client.DefaultRequestHeaders.Add("Client-ID", "tq.net");
+        }
 
+        protected Newtonsoft.Json.Linq.JObject get_json() {
             var response = client.GetAsync(this.queryoptions).Result;
             String dataobjects = null;
 
