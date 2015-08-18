@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tq.NET", "ConsoleApplication3\tq.NET.csproj", "{3CA38312-F363-4A50-BE8C-53420228121B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tq.NET", "tq.NET\tq.NET.csproj", "{3CA38312-F363-4A50-BE8C-53420228121B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
