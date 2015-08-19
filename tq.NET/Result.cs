@@ -65,4 +65,20 @@ namespace tq.NET {
             Console.WriteLine("{0,35}    Viewers: {1,6}", this.name, this.viewers);
         }
     }
+
+
+    class Channel : Result {
+        public string name { get; set; }
+        public string game { get; set; }
+        public string url { get; set; }
+
+        public Channel(string chname, Game game, string chURL) {
+            this.name = chname;
+            this.game = game.name;
+            this.url = chURL;
+        }
+        public override void printInfo() {
+            Console.WriteLine("{0,35}    Game: {1}    URL: {2}", this.name, this.game, this.url);
+        }
+    }
 }

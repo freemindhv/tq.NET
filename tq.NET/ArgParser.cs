@@ -40,7 +40,10 @@ namespace tq.NET {
                 option => querylist.Add(new TopGame()));
 
             option_set.Add("s=|search=", "Searches for a stream",
-                option => querylist.Add(new Search(option)));
+                option => querylist.Add(new SearchStream(option)));
+
+            option_set.Add("C=|channel=", "Retrieve information about a channel",
+                option => querylist.Add(new SearchChannel(option)));
 
             try {
                 option_set.Parse(args);

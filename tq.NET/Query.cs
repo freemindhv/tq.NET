@@ -41,9 +41,14 @@ namespace tq.NET {
             String dataobjects = null;
 
             if (response.IsSuccessStatusCode) {
-                dataobjects = response.Content.ReadAsStringAsync().Result;
+                dataobjects = response.Content.ReadAsStringAsync().Result; 
+            }
+            else {
+                Console.WriteLine("No Content found");
+                Environment.Exit(-1);
             }
             return JsonConvert.DeserializeObject<dynamic>(dataobjects);
+            
         }
         public virtual IEnumerable<Result> get_streamlist() {
             throw new NotImplementedException();
@@ -89,8 +94,8 @@ namespace tq.NET {
     }
 
 
-    class Search : Query {
-        public Search(string searchstring) {
+    class SearchStream : Query {
+        public SearchStream(string searchstring) {
             this.queryoptions = "search/streams?q=" + searchstring;
         }
         public override IEnumerable<Result> get_streamlist() {
@@ -109,12 +114,33 @@ namespace tq.NET {
     }
 
 
-    class Streams : Query {
-        public Streams(List<string>options) {
-            this.queryoptions = "streams?";
-            foreach (var option in options) {
-                this.queryoptions += option;
+    class SearchChannel : Query {
+        public SearchChannel(string searchstring) {
+            this.queryoptions = "channels/" + searchstring;
+        }
+
+        public override IEnumerable<Result> get_streamlist() {
+            dynamic json = this.get_json();
+            var streamlist = new List<Result>();
+            Game game = null;
+            var channame = json.display_name.ToString();
+
+            if (json.error != null) {
+                Console.WriteLine("Channel not found");
+                Environment.Exit(-1);
             }
+
+            if (json.game != null) {
+                game = new Game(json.game.ToString());
+            }
+            else {
+                game = new Game("n/a");
+            }
+            var url = json.url.ToString();
+            var channel = new Channel(channame, game, url);
+            streamlist.Add(channel);
+
+            return streamlist;
         }
     }
 }
