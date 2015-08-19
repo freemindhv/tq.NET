@@ -7,7 +7,7 @@ Inspired by the implementation of [stnuessl](https://github.com/stnuessl) i crea
 At the moment it is at a very early stage and there is a lot of work to do.
 
 ##Usage
-At the moment there are just 2 commandline switches that are working
+At the moment there are just 3 commandline switches that are working
 
 ###Featured Streams
 To query the twitch.tv featured Streams run tq with the /f switch.
