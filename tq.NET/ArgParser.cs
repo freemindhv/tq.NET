@@ -45,6 +45,9 @@ namespace tq.NET {
             option_set.Add("C=|channel=", "Retrieve information about a channel",
                 option => querylist.Add(new ChannelInfo(option)));
 
+            option_set.Add("S=|stream=", "Retrieve information about a stream",
+                option => querylist.Add(new StreamInfo(option)));
+
             try {
                 option_set.Parse(args);
             }

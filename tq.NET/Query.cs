@@ -138,4 +138,33 @@ namespace tq.NET {
             return resultlist;
         }
     }
+
+
+    class StreamInfo : Query {
+        public StreamInfo(string streamname) {
+            this.queryoptions = "streams/" + streamname;
+        }
+
+        public override IEnumerable<Result> get_streamlist() {
+            dynamic json = this.get_json();
+            var resultlist = new List<Result>();
+
+            if (json.stream != null) {
+                var name = json.stream.channel.display_name.ToString();
+                var game = new Game(json.stream.game.ToString());
+                var viewers = json.stream.viewers.ToString();
+
+                var stream = new Stream(name, game, viewers);
+                resultlist.Add(stream);
+            }
+            else if (json.error != null) {
+                resultlist.Add(new Error(json.message.ToString()));
+            }
+            else {
+                resultlist.Add(new Error("Stream is offline"));
+            }
+            
+            return resultlist;
+        }
+    }
 }
