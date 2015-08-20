@@ -81,4 +81,16 @@ namespace tq.NET {
             Console.WriteLine("{0,35}    Game: {1}    URL: {2}", this.name, this.game, this.url);
         }
     }
+
+
+    class Error : Result {
+        private string message;
+        public Error(string errmsg) {
+            this.message = errmsg;
+        }
+
+        public override void printInfo() {
+            Console.WriteLine("{0,35}", this.message);
+        }
+    }
 }

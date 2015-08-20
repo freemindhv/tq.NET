@@ -38,15 +38,8 @@ namespace tq.NET {
 
         protected Newtonsoft.Json.Linq.JObject get_json() {
             var response = client.GetAsync(this.queryoptions).Result;
-            String dataobjects = null;
+            var dataobjects = response.Content.ReadAsStringAsync().Result; 
 
-            if (response.IsSuccessStatusCode) {
-                dataobjects = response.Content.ReadAsStringAsync().Result; 
-            }
-            else {
-                Console.WriteLine("No Content found");
-                Environment.Exit(-1);
-            }
             return JsonConvert.DeserializeObject<dynamic>(dataobjects);
             
         }
@@ -62,17 +55,17 @@ namespace tq.NET {
         }
         public override IEnumerable<Result> get_streamlist() {
             dynamic json = this.get_json();
-            var streamlist = new List<Result>();
+            var resultlist = new List<Result>();
 
             foreach (var entry in json.featured) {
                 var channel = entry.stream.channel.display_name.ToString();
                 var viewers = entry.stream.viewers.ToString();
                 var game = new Game(entry.stream.game.ToString());
                 var stream = new Stream(channel, game: game, strviewers: viewers);
-                streamlist.Add(stream);
+                resultlist.Add(stream);
             }
 
-            return streamlist;
+            return resultlist;
         }
     }
 
@@ -83,13 +76,13 @@ namespace tq.NET {
         }
         public override IEnumerable<Result> get_streamlist() {
             dynamic json = this.get_json();
-            var streamlist = new List<Result>();
+            var resultlist = new List<Result>();
 
             foreach (var entry in json.top) {
                 var game = new Game(entry.game.name.ToString(), entry.viewers.ToString());
-                streamlist.Add(game);
+                resultlist.Add(game);
             }
-            return streamlist;
+            return resultlist;
         }
     }
 
@@ -100,35 +93,37 @@ namespace tq.NET {
         }
         public override IEnumerable<Result> get_streamlist() {
             dynamic json = this.get_json();
-            var streamlist = new List<Result>();
+            var resultlist = new List<Result>();
 
             foreach (var entry in json.streams) {
                 var channel = entry.channel.display_name.ToString();
                 var viewers = entry.viewers.ToString();
                 var game = new Game(entry.game.ToString());
                 var stream = new Stream(channel, game: game, strviewers: viewers);
-                streamlist.Add(stream);
+                resultlist.Add(stream);
             }
-            return streamlist;
+            return resultlist;
         }
     }
 
 
-    class SearchChannel : Query {
-        public SearchChannel(string searchstring) {
+    class ChannelInfo : Query {
+        public ChannelInfo(string searchstring) {
             this.queryoptions = "channels/" + searchstring;
         }
 
         public override IEnumerable<Result> get_streamlist() {
             dynamic json = this.get_json();
-            var streamlist = new List<Result>();
-            Game game = null;
-            var channame = json.display_name.ToString();
+            var resultlist = new List<Result>();
 
             if (json.error != null) {
-                Console.WriteLine("Channel not found");
-                Environment.Exit(-1);
+                var error = new Error(json.message.ToString());
+                resultlist.Add(error);
+                return resultlist;
             }
+
+            var channame = json.display_name.ToString();
+            Game game = null;
 
             if (json.game != null) {
                 game = new Game(json.game.ToString());
@@ -138,9 +133,9 @@ namespace tq.NET {
             }
             var url = json.url.ToString();
             var channel = new Channel(channame, game, url);
-            streamlist.Add(channel);
+            resultlist.Add(channel);
 
-            return streamlist;
+            return resultlist;
         }
     }
 }
