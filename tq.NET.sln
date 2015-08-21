@@ -9,6 +9,7 @@ Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup", "Setup1\Setup.ispro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{16D543E6-7A2B-4628-90C5-A75FE565A4BE}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
 EndProject
