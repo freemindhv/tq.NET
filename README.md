@@ -8,11 +8,12 @@ At the moment it is at a very early stage and there is a lot of work to do.
 
 ##Usage
 ```
- -?, --help, -h             Prints this help message
- -f, -F, --featured         Shows the featured Streams
- -t, -T, --top, --top-games Shows the Top Games sorted by viewers
- -s, --search=VALUE         Searches for a stream
- -C, --channel=VALUE        Retrieve information about a channel
+  -?, --help, -h             Prints this help message
+  -f, -F, --featured         Shows the featured Streams
+  -t, -T, --top, --top-games Shows the Top Games sorted by viewers
+  -s, --search=VALUE         Searches for a stream
+  -C, --channel=VALUE        Retrieve information about a channel
+  -S, --stream=VALUE         Retrieve information about a stream
  ```
 
 ###Featured Streams
