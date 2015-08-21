@@ -7,7 +7,13 @@ Inspired by the implementation of [stnuessl](https://github.com/stnuessl) i crea
 At the moment it is at a very early stage and there is a lot of work to do.
 
 ##Usage
-At the moment there are just 3 commandline switches that are working
+```
+ -?, --help, -h             Prints this help message
+ -f, -F, --featured         Shows the featured Streams
+ -t, -T, --top, --top-games Shows the Top Games sorted by viewers
+ -s, --search=VALUE         Searches for a stream
+ -C, --channel=VALUE        Retrieve information about a channel
+ ```
 
 ###Featured Streams
 To query the twitch.tv featured Streams run tq with the /f switch.
