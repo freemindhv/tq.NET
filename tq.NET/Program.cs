@@ -1,4 +1,5 @@
-﻿/* 
+﻿using Mono.Options;
+/* 
 tq.NET - simple commandline twitch client
 Copyright (C) 2015  Dennis Greiner
 
@@ -25,20 +26,70 @@ namespace tq.NET {
     class Program {
         static void Main(string[] args) {
 
-            List<Query> queries = ArgParser.parse(args);
+            var option_set = new OptionSet();
+            var queries = new List<Query>();
+            var test = new List<string>();
+            string featured = null;
+            string topgame = null;
+            string search = null;
+            var channel = false;
+            var stream = false;
 
+            option_set.Add("?|help|h", "Prints this help message",
+                option => show_help("Usage:", option_set));
+
+            option_set.Add("f|F|featured", "Shows the featured Streams",
+                option => test.Add(featured = "featured"));
+
+            option_set.Add("t|T|top|top-games",
+                "Shows the Top Games sorted by viewers",
+                option => test.Add(topgame = "topgame"));
+
+            option_set.Add("s=|search=", "Searches for a stream",
+                option => test.Add(search = "search"));
+
+            option_set.Add("C=|channel=", "Retrieve information about a channel",
+                option => channel = option != null);
+
+            option_set.Add("S=|stream=", "Retrieve information about a stream",
+                option => stream = option != null);
+
+            try {
+                option_set.Parse(args);
+            }
+            catch (OptionException) {
+                show_help("Error - usage is:", option_set);
+            }
+
+            foreach (var arg in test) {
+                if (arg == "featured")
+                    queries.Add(new FeaturedStream());
+                else if (arg == "topgame")
+                    queries.Add(new TopGame());
+                else if (arg == "search")
+                    queries.Add(new SearchStream("starcraft"));
+
+            }
+
+            
             foreach (var query in queries) {
                 var streams = query.get_streamlist();
                 Console.WriteLine("");
                 try {
-                    foreach (var stream in streams) {
-                        stream.printInfo();
+                    foreach (var s in streams) {
+                        s.printInfo();
                     }
                 } catch (NotImplementedException){
                     Console.WriteLine("{0,35}", "Feature not implemented yet!");
                 }
                 Console.WriteLine("");
             }
+        }
+
+        public static void show_help(string message, OptionSet option_set) {
+            Console.Error.WriteLine(message);
+            option_set.WriteOptionDescriptions(Console.Error);
+            Environment.Exit(-1);
         }
     }
 }
