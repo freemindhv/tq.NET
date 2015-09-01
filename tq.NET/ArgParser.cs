@@ -22,7 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace tq.NET {
-    public class ArgParser {
+    public static class ArgParser {
         public class Option {
             public bool has_optionvalue;
             public string Name { get;  private set; }
@@ -35,7 +35,7 @@ namespace tq.NET {
             }
 
             public void add_option(string value) {
-                if (this.has_optionvalue == false) {
+                if (!this.has_optionvalue) {
                     throw new Exception("Option cannot have a option value");
                 }
                 else {
