@@ -20,47 +20,131 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mono.Options;
 
 namespace tq.NET {
-    class ArgParser {
-        public static List<Query> parse(string[] args) {
-            var option_set = new OptionSet();
-            var help = false;
-            var querylist = new List<Query>();
+    public class ArgParser {
+        public class Option {
+            public bool has_optionvalue;
+            public string Name { get;  private set; }
+            private List<string> optionvalues = new List<string>();
 
-            option_set.Add("?|help|h", "Prints this help message",
-                option => help = option != null);
 
-            option_set.Add("f|F|featured", "Shows the featured Streams",
-                option => querylist.Add(new FeaturedStream()));
+            public Option(bool has_value, string name) {
+                this.has_optionvalue = has_value;
+                this.Name = name;
+            }
 
-            option_set.Add("t|T|top|top-games",
-                "Shows the Top Games sorted by viewers",
-                option => querylist.Add(new TopGame()));
+            public void add_option(string value) {
+                if (this.has_optionvalue == false) {
+                    throw new Exception("Option cannot have a option value");
+                }
+                else {
+                    this.optionvalues.Add(value);
+                }
+            }
 
-            option_set.Add("s=|search=", "Searches for a stream",
-                option => querylist.Add(new SearchStream(option)));
+            public List<string> get_options() {
+                return this.optionvalues;
+            }
 
-            option_set.Add("C=|channel=", "Retrieve information about a channel",
-                option => querylist.Add(new ChannelInfo(option)));
+        }
+        private static Dictionary<string, Option> optionset = new Dictionary<string, Option>();
+        private static List<Option> optionlist = new List<Option>();
+        public enum option_type {
+            FLAG,
+            OPTION,
+            VALUE,
+            INVALID,
+        };
 
-            option_set.Add("S=|stream=", "Retrieve information about a stream",
-                option => querylist.Add(new StreamInfo(option)));
 
+        public static void add_option(string stroptions, option_type type) {
             try {
-                option_set.Parse(args);
+                var delimiter = new char[] { '|', '|' };
+                string[] options = stroptions.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var opt in options) {
+                    if (type == option_type.FLAG) {
+                        optionset.Add(opt, new Option(false, opt));
+                    }
+                    else if (type == option_type.OPTION) {
+                        optionset.Add(opt, new Option(true, opt));
+                    }
+                }
             }
-            catch (OptionException) {
-                show_help("Error - usage is:", option_set);
+            catch (Exception e) {
+                throw (e);
             }
-            return querylist;
         }
 
-        public static void show_help(string message, OptionSet option_set) {
-            Console.Error.WriteLine(message);
-            option_set.WriteOptionDescriptions(Console.Error);
-            Environment.Exit(-1);
+
+        public static List<Option> parse(string[] args) {
+
+            for (int i = 0; i < args.Length; i++) {
+                if (args[i].Contains("-") || args[i].Contains("/")) {
+
+                    var optiontype = check_option(args[i]);
+                    var option = trim_option(args[i]);
+
+                    if (optiontype == option_type.FLAG) {
+                        optionlist.Add(optionset[option]);
+
+                    }
+                    else if (optiontype == option_type.OPTION) {
+                        var opt = optionset[option];
+                        for (int x = i + 1; x < args.Length; x++) {
+                            if (check_option(args[x]) == option_type.VALUE) {
+                                opt.add_option(args[x]);
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                        optionlist.Add(opt);
+
+                    }
+                    else if (optiontype == option_type.INVALID) {
+                        Console.WriteLine("Invalid Option --- show usage");
+                        Environment.Exit(-1);
+                    }
+
+                }
+            }
+            return optionlist;
+        }
+
+
+        private static option_type check_option(string arg) {
+
+            var option = trim_option(arg);
+
+
+            try {
+                if (optionset[option].has_optionvalue) {
+                    return option_type.OPTION;
+                }
+                else {
+                    return option_type.FLAG;
+                }
+            }
+            catch {
+                if (arg.Contains("-") || arg.Contains("/")) {
+                    return option_type.INVALID;
+                }
+                else {
+                    return option_type.VALUE;
+                }
+            }
+        }
+
+
+        private static string trim_option(string arg) {
+            var option = arg.Trim();
+            option = option.Replace("--", "");
+            option = option.Replace("-", "");
+            option = option.Replace("/", "");
+
+            return option;
         }
     }
 }
