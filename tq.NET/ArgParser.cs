@@ -22,7 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace tq.NET {
-    public static class ArgParser {
+    public class ArgParser {
         public class Option {
             public bool has_optionvalue;
             public string Name { get;  private set; }
@@ -48,8 +48,8 @@ namespace tq.NET {
             }
 
         }
-        private static Dictionary<string, Option> optionset = new Dictionary<string, Option>();
-        private static List<Option> optionlist = new List<Option>();
+        private Dictionary<string, Option> optionset = new Dictionary<string, Option>();
+        private List<Option> optionlist = new List<Option>();
         public enum option_type {
             FLAG,
             OPTION,
@@ -58,17 +58,17 @@ namespace tq.NET {
         };
 
 
-        public static void add_option(string stroptions, option_type type) {
+        public void add_option(string stroptions, option_type type) {
             try {
                 var delimiter = new char[] { '|', '|' };
                 string[] options = stroptions.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var opt in options) {
                     if (type == option_type.FLAG) {
-                        optionset.Add(opt, new Option(false, opt));
+                        this.optionset.Add(opt, new Option(false, opt));
                     }
                     else if (type == option_type.OPTION) {
-                        optionset.Add(opt, new Option(true, opt));
+                        this.optionset.Add(opt, new Option(true, opt));
                     }
                 }
             }
@@ -78,7 +78,7 @@ namespace tq.NET {
         }
 
 
-        public static List<Option> parse(string[] args) {
+        public List<Option> parse(string[] args) {
 
             for (int i = 0; i < args.Length; i++) {
                 if (args[i].Contains("-") || args[i].Contains("/")) {
@@ -114,7 +114,7 @@ namespace tq.NET {
         }
 
 
-        private static option_type check_option(string arg) {
+        private option_type check_option(string arg) {
 
             var option = trim_option(arg);
 
@@ -138,7 +138,7 @@ namespace tq.NET {
         }
 
 
-        private static string trim_option(string arg) {
+        private string trim_option(string arg) {
             var option = arg.Trim();
             option = option.Replace("--", "");
             option = option.Replace("-", "");
