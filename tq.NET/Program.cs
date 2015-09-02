@@ -26,7 +26,7 @@ namespace tq.NET {
     class Program {
         static void Main(string[] args) {
             List<Query> queries = new List<Query>();
-
+            int limit = 15;
             var parser = new ArgParser();
             parser.add_option("featured||f||F", ArgParser.option_type.FLAG);
             parser.add_option("topgames||t||T", ArgParser.option_type.FLAG);
@@ -35,26 +35,31 @@ namespace tq.NET {
             parser.add_option("print||p||P", ArgParser.option_type.OPTION);
             parser.add_option("channel||C", ArgParser.option_type.OPTION);
             parser.add_option("stream||S", ArgParser.option_type.OPTION);
-            parser.add_option("limit||l", ArgParser.option_type.OPTION);
+            parser.add_option("limit||l", ArgParser.option_type.OPTION, mandatory:true);
             var options = parser.parse(args);
 
             foreach (var opt in options) {
-                if (opt.Name == "featured" || opt.Name == "f" || opt.Name == "F") {
-                    queries.Add(new FeaturedStream());
+
+                if (opt.Name == "limit" || opt.Name == "l") {
+                    foreach (var optlimit in opt.get_options()) {
+                        limit = Convert.ToInt32(optlimit);
+                    }
+                } else if (opt.Name == "featured" || opt.Name == "f" || opt.Name == "F") {
+                    queries.Add(new FeaturedStream(limit));
                 } else if (opt.Name == "topgames" || opt.Name == "t" || opt.Name == "T") {
-                    queries.Add(new TopGame());
+                    queries.Add(new TopGame(limit));
                 }
                 else if (opt.Name == "channel" || opt.Name == "C") {
                     foreach (var channel in opt.get_options()) {
-                        queries.Add(new ChannelInfo(channel));
+                        queries.Add(new ChannelInfo(channel, limit));
                     }
                 } else if (opt.Name == "stream" || opt.Name == "S") {
                     foreach (var stream in opt.get_options()) {
-                        queries.Add(new ChannelInfo(stream));
+                        queries.Add(new ChannelInfo(stream, limit));
                     }
                 } else if (opt.Name == "search" || opt.Name == "s") {
                     foreach (var searchstring in opt.get_options()) {
-                        queries.Add(new SearchStream(searchstring));
+                        queries.Add(new SearchStream(searchstring, limit));
                     }
                 }
             }

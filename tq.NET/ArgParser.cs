@@ -25,26 +25,28 @@ namespace tq.NET {
     public class ArgParser {
         public class Option {
             public bool has_optionvalue;
+            public bool mandatory;
             public string Name { get;  private set; }
             private List<string> optionvalues = new List<string>();
 
 
-            public Option(bool has_value, string name) {
-                this.has_optionvalue = has_value;
-                this.Name = name;
+            public Option(bool has_value, string name, bool mand = false) {
+                has_optionvalue = has_value;
+                Name = name;
+                mandatory = mand;
             }
 
             public void add_option(string value) {
-                if (!this.has_optionvalue) {
-                    throw new Exception("Option cannot have a option value");
+                if (!has_optionvalue) {
+                    throw new Exception("Flag cannot have a option value");
                 }
                 else {
-                    this.optionvalues.Add(value);
+                    optionvalues.Add(value);
                 }
             }
 
             public List<string> get_options() {
-                return this.optionvalues;
+                return optionvalues;
             }
 
         }
@@ -58,17 +60,17 @@ namespace tq.NET {
         };
 
 
-        public void add_option(string stroptions, option_type type) {
+        public void add_option(string stroptions, option_type type, bool mandatory = false) {
             try {
                 var delimiter = new char[] { '|', '|' };
                 string[] options = stroptions.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var opt in options) {
                     if (type == option_type.FLAG) {
-                        this.optionset.Add(opt, new Option(false, opt));
+                        optionset.Add(opt, new Option(false, opt, mandatory));
                     }
                     else if (type == option_type.OPTION) {
-                        this.optionset.Add(opt, new Option(true, opt));
+                        optionset.Add(opt, new Option(true, opt, mandatory));
                     }
                 }
             }
@@ -104,13 +106,13 @@ namespace tq.NET {
 
                     }
                     else if (optiontype == option_type.INVALID) {
-                        Console.WriteLine("Invalid Option --- show usage");
+                        Console.WriteLine("Invalid Option --- show usage"); //TODO show usage
                         Environment.Exit(-1);
                     }
 
                 }
             }
-            return optionlist;
+            return optionlist.OrderByDescending(o=>o.mandatory).ToList();
         }
 
 

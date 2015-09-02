@@ -50,11 +50,11 @@ namespace tq.NET {
 
 
     class FeaturedStream : Query {
-        public FeaturedStream() {
-            this.queryoptions = "streams/featured";
+        public FeaturedStream(int limit) {
+            queryoptions = "streams/featured?limit=" + limit;
         }
         public override IEnumerable<Result> get_streamlist() {
-            dynamic json = this.get_json();
+            dynamic json = get_json();
             var resultlist = new List<Result>();
 
             foreach (var entry in json.featured) {
@@ -71,11 +71,11 @@ namespace tq.NET {
 
 
     class TopGame : Query {
-        public TopGame() {
-            this.queryoptions = "games/top";
+        public TopGame(int limit) {
+            queryoptions = "games/top?limit=" + limit;
         }
         public override IEnumerable<Result> get_streamlist() {
-            dynamic json = this.get_json();
+            dynamic json = get_json();
             var resultlist = new List<Result>();
 
             foreach (var entry in json.top) {
@@ -88,11 +88,11 @@ namespace tq.NET {
 
 
     class SearchStream : Query {
-        public SearchStream(string searchstring) {
-            this.queryoptions = "search/streams?q=" + searchstring;
+        public SearchStream(string searchstring, int limit) {
+            queryoptions = "search/streams?q=" + searchstring + "&limit=" + limit;
         }
         public override IEnumerable<Result> get_streamlist() {
-            dynamic json = this.get_json();
+            dynamic json = get_json();
             var resultlist = new List<Result>();
 
             foreach (var entry in json.streams) {
@@ -108,12 +108,12 @@ namespace tq.NET {
 
 
     class ChannelInfo : Query {
-        public ChannelInfo(string searchstring) {
-            this.queryoptions = "channels/" + searchstring;
+        public ChannelInfo(string searchstring, int limit) {
+            queryoptions = "channels/" + searchstring;
         }
 
         public override IEnumerable<Result> get_streamlist() {
-            dynamic json = this.get_json();
+            dynamic json = get_json();
             var resultlist = new List<Result>();
 
             if (json.error != null) {
@@ -141,12 +141,12 @@ namespace tq.NET {
 
 
     class StreamInfo : Query {
-        public StreamInfo(string streamname) {
-            this.queryoptions = "streams/" + streamname;
+        public StreamInfo(string streamname, int limit) {
+            queryoptions = "streams/" + streamname;
         }
 
         public override IEnumerable<Result> get_streamlist() {
-            dynamic json = this.get_json();
+            dynamic json = get_json();
             var resultlist = new List<Result>();
 
             if (json.stream != null) {
