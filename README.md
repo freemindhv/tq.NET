@@ -1,3 +1,12 @@
+# Overview
+* [tq.NET](https://github.com/freemindhv/tq.NET#tqnet)
+    * [Why tq?](https://github.com/freemindhv/tq.NET#why-tq)
+    * [Usage](https://github.com/freemindhv/tq.NET#usage)
+        * [Featured Streams](https://github.com/freemindhv/tq.NET#featured-streams)
+        * [Top Games](https://github.com/freemindhv/tq.NET#top-games)
+        * [Search Streams](https://github.com/freemindhv/tq.NET#search-streams)
+        * [Retrieve Channel information](https://github.com/freemindhv/tq.NET#retrieve-channel-information)
+        * [Retrieve Stream information](https://github.com/freemindhv/tq.NET#retrieve-stream-information)
 # tq.NET
 Twitch commandline interface in .NET inspired by [tq](https://github.com/stnuessl/tq)
 tq is a simple and easy to use command-line tool to query information about streams and channels on the twitch.tv website.
@@ -26,7 +35,7 @@ tq --featured
 ```
 
 ###Top Games
-To query the Top Games orderd by viewers on twitch.tv run tq with the /t switch. 
+To query the Top Games orderd by viewers on twitch.tv run tq with the /t switch.
 ```
 tq /t
 tq -t
