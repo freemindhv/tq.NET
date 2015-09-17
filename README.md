@@ -1,4 +1,7 @@
-# Overview
+# tq.NET
+Twitch commandline interface in .NET inspired by [tq](https://github.com/stnuessl/tq)
+tq is a simple and easy to use command-line tool to query information about streams and channels on the twitch.tv website.
+
 * [tq.NET](https://github.com/freemindhv/tq.NET#tqnet)
     * [Why tq?](https://github.com/freemindhv/tq.NET#why-tq)
     * [Usage](https://github.com/freemindhv/tq.NET#usage)
@@ -7,11 +10,6 @@
         * [Search Streams](https://github.com/freemindhv/tq.NET#search-streams)
         * [Retrieve Channel information](https://github.com/freemindhv/tq.NET#retrieve-channel-information)
         * [Retrieve Stream information](https://github.com/freemindhv/tq.NET#retrieve-stream-information)
-
-
-# tq.NET
-Twitch commandline interface in .NET inspired by [tq](https://github.com/stnuessl/tq)
-tq is a simple and easy to use command-line tool to query information about streams and channels on the twitch.tv website.
 
 ##Why tq?
 Inspired by the implementation of [stnuessl](https://github.com/stnuessl) i created an implementation of tq in .NET to fulfill my Windows needs.
