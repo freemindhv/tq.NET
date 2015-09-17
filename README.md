@@ -52,7 +52,7 @@ tq --search VALUE
 ```
 
 ###Retrieve Channel information
-You can retrieve infromations about a given Channel. You will not get any information about the online status of this channel's stream though.'
+You can retrieve infromations about a given Channel. You will not get any information about the online status of this channel's stream though.
 ```
 tq /C VALUE
 tq -C VALUE
@@ -61,7 +61,7 @@ tq --channel VALUE
 
 
 ###Retrieve Stream information
-You can retrieve infromations about a given Stream, however you will not get any Informations if the Stream is offline..'
+You can retrieve infromations about a given Stream, however you will not get any Informations if the Stream is offline..
 ```
 tq /S VALUE
 tq -S VALUE
