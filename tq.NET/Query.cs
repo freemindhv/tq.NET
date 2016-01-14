@@ -25,7 +25,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace tq.NET {
-    class Query {
+    public class Query {
         protected string queryoptions;
         public static HttpClient client = new HttpClient();
 
@@ -49,7 +49,7 @@ namespace tq.NET {
     }
 
 
-    class FeaturedStream : Query {
+    public class FeaturedStream : Query {
         public FeaturedStream(int limit) {
             queryoptions = "streams/featured?limit=" + limit;
         }
@@ -70,7 +70,7 @@ namespace tq.NET {
     }
 
 
-    class TopGame : Query {
+    public class TopGame : Query {
         public TopGame(int limit) {
             queryoptions = "games/top?limit=" + limit;
         }
@@ -87,7 +87,7 @@ namespace tq.NET {
     }
 
 
-    class SearchStream : Query {
+    public class SearchStream : Query {
         public SearchStream(string searchstring, int limit) {
             queryoptions = "search/streams?q=" + searchstring + "&limit=" + limit;
         }
@@ -107,7 +107,7 @@ namespace tq.NET {
     }
 
 
-    class ChannelInfo : Query {
+    public class ChannelInfo : Query {
         public ChannelInfo(string searchstring, int limit) {
             queryoptions = "channels/" + searchstring;
         }
@@ -140,7 +140,7 @@ namespace tq.NET {
     }
 
 
-    class StreamInfo : Query {
+    public class StreamInfo : Query {
         public StreamInfo(string streamname, int limit) {
             queryoptions = "streams/" + streamname;
         }

@@ -23,14 +23,14 @@ using System.Threading.Tasks;
 
 namespace tq.NET {
 
-    abstract class Result {
+    public abstract class Result {
         public virtual void printInfo() {
             throw new NotImplementedException();
         }
     }
 
 
-    class Stream : Result {
+    public class Stream : Result {
         public string name { get; set; }
         public string game { get; set; }
         public string URL { get; set; }
@@ -53,7 +53,7 @@ namespace tq.NET {
     }
 
 
-    class Game : Result {
+    public class Game : Result {
         public string name { get; set; }
         public string viewers { get; set; }
 
@@ -67,7 +67,7 @@ namespace tq.NET {
     }
 
 
-    class Channel : Result {
+    public class Channel : Result {
         public string name { get; set; }
         public string game { get; set; }
         public string url { get; set; }
@@ -83,7 +83,7 @@ namespace tq.NET {
     }
 
 
-    class Error : Result {
+    public class Error : Result {
         private string message;
         public Error(string errmsg) {
             this.message = errmsg;
@@ -95,7 +95,7 @@ namespace tq.NET {
     }
 
 
-    class Bookmark : Result {
+    public class Bookmark : Result {
         string streamname;
         public Bookmark(string stream) {
             this.streamname = stream;
