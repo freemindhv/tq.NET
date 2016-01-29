@@ -27,7 +27,7 @@ using Newtonsoft.Json;
 namespace tq.NET {
     public class Query {
         protected string queryoptions;
-        public static HttpClient client = new HttpClient();
+        public HttpClient client = new HttpClient();
 
         public Query() {
             client.BaseAddress = new Uri("https://api.twitch.tv/kraken/");
@@ -141,8 +141,11 @@ namespace tq.NET {
 
 
     public class StreamInfo : Query {
+        string streamname;
+
         public StreamInfo(string streamname, int limit) {
-            queryoptions = "streams/" + streamname;
+            this.streamname = streamname;
+            queryoptions = "streams/" + this.streamname;
         }
 
         public override IEnumerable<Result> get_streamlist() {
@@ -161,7 +164,7 @@ namespace tq.NET {
                 resultlist.Add(new Error(json.message.ToString()));
             }
             else {
-                resultlist.Add(new Error("Stream is offline"));
+                resultlist.Add(new Error(string.Format("{0} is offline", this.streamname)));
             }
             
             return resultlist;

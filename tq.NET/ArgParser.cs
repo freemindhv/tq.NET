@@ -30,12 +30,29 @@ namespace tq.NET {
 
         public ArgParser() {
 
-            options.Add("?|help|h", "Print this help", option => show_help("Usage is:", options));
-            options.Add("featured|f", "Query featured streams.", option => queries.Add(new FeaturedStream(15)));
-            options.Add("top|t", "Get a list of the currently top played games.", option => queries.Add(new TopGame(15)));
-            options.Add("search-streams|s=", "Search for streams.", option => queries.Add(new SearchStream(option,15)));
-            options.Add("channels|C=", "Retrieve information about a channel.", option => queries.Add(new ChannelInfo(option,15)));
-            options.Add("streams|S=", "Retrieve information about a steam. Stream must be live.", option => queries.Add(new StreamInfo(option,15)));
+            options.Add("?|help|h", "Print this help",
+                option => show_help("Usage is:", options));
+
+            options.Add("featured|f", "Query featured streams.",
+                option => queries.Add(new FeaturedStream(15)));
+
+            options.Add("top|t", "Get a list of the currently top played games.",
+                option => queries.Add(new TopGame(15)));
+
+            options.Add("search-streams|s=", "Search for streams.",
+                option => queries.Add(new SearchStream(option,15)));
+
+            options.Add("channels|C=", "Retrieve information about a channel.",
+                option => queries.Add(new ChannelInfo(option,15)));
+
+            options.Add("streams|S=", "Retrieve information about a steam. Stream must be live.",
+                option => queries.Add(new StreamInfo(option,15)));
+
+            options.Add("add-bookmark|a=", "Add a new bookmark.",
+                option => Bookmarks.add(option));
+
+            options.Add("check-bookmarks|b", "Check which bookmarks are streaming.",
+                option => Bookmarks.get_bookmarks().ForEach(item => queries.Add(new StreamInfo(item,15))));    
 
         }
 

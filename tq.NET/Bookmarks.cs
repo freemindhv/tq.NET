@@ -5,32 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace tq.NET {
-    class Bookmarks {
-        private List<Bookmark> bookmarklist = new List<Bookmark>();
-        public Bookmarks() {
-            
-        }
+    static class Bookmarks {
 
         //add bookmark
-        public void add(Bookmark bookmark) {
-            bookmarklist.Add(bookmark);
+        public static void add(String bookmark) {
+            var bookmarklist = System.IO.File.ReadLines(@"bookmarks.txt").ToList();
+            if (bookmarklist.Contains(bookmark)) {
+                Console.WriteLine("Bookmark already exists");
+            } else {
+                bookmarklist.Add(bookmark);
+                try {
+                    bookmarklist.Sort();
+                    System.IO.File.WriteAllLines(@"bookmarks.txt", bookmarklist);
+                    Console.WriteLine("Bookmark successfully saved");
+                }
+                catch (UnauthorizedAccessException e) {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
         //get bookmarks
-        public List<Bookmark> get() {
+        public static List<String> get_bookmarks() {
+            var bookmarklist = System.IO.File.ReadLines(@"bookmarks.txt").ToList();
             return bookmarklist;
         }
-        //write to disk
-        public bool save() {
-
-            return true;
-        }
-
-        //read from disk
-        public List<Bookmark> load() {
-
-            return bookmarklist;
-        }
-
     }
 
 }

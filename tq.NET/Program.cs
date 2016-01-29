@@ -1,5 +1,4 @@
-﻿using Mono.Options;
-/* 
+﻿/* 
 tq.NET - simple commandline twitch client
 Copyright (C) 2015  Dennis Greiner
 
@@ -33,10 +32,10 @@ namespace tq.NET {
 
              
             foreach (var query in queries) {
-                var streams = query.get_streamlist();
+                var response = query.get_streamlist();
                 Console.WriteLine("");
                 try {
-                    foreach (var s in streams) {
+                    foreach (var s in response) {
                         s.printInfo();
                     }
                 } catch (NotImplementedException){
