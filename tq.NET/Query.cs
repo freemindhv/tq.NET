@@ -107,6 +107,26 @@ namespace tq.NET {
     }
 
 
+    public class SearchGameStream : Query {
+        public SearchGameStream(string searchstring, int limit) {
+            queryoptions = "streams?game=" + searchstring + "&limit=" + limit;
+        }
+        public override IEnumerable<Result> get_streamlist() {
+            dynamic json = get_json();
+            var resultlist = new List<Result>();
+
+            foreach (var entry in json.streams) {
+                var channel = entry.channel.display_name.ToString();
+                var viewers = entry.viewers.ToString();
+                var game = new Game(entry.game.ToString());
+                var stream = new Stream(channel, game: game, strviewers: viewers);
+                resultlist.Add(stream);
+            }
+            return resultlist;
+        }
+    }
+
+
     public class ChannelInfo : Query {
         public ChannelInfo(string searchstring, int limit) {
             queryoptions = "channels/" + searchstring;

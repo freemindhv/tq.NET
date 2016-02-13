@@ -93,12 +93,4 @@ namespace tq.NET {
             Console.WriteLine("{0,35}", this.message);
         }
     }
-
-
-    public class Bookmark : Result {
-        string streamname;
-        public Bookmark(string stream) {
-            this.streamname = stream;
-        }
-    }
 }

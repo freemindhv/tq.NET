@@ -25,23 +25,19 @@ namespace tq.NET {
     class Program {
         static void Main(string[] args) {
             List<Query> queries = new List<Query>();
-            int limit = 15;
-
             var parser = new ArgParser();
-            queries = parser.parse(args);
+            var twitchhandler = new TwitchAPIHandler();
 
-             
-            foreach (var query in queries) {
-                var response = query.get_streamlist();
-                Console.WriteLine("");
+            foreach (var query in parser.parse(args)) {
+                twitchhandler.add_query(query);
+            }
+
+            foreach (var response in twitchhandler.handle_queries()) {
                 try {
-                    foreach (var s in response) {
-                        s.printInfo();
-                    }
-                } catch (NotImplementedException){
+                    response.printInfo();
+                    } catch (NotImplementedException) {
                     Console.WriteLine("{0,35}", "Feature not implemented yet!");
                 }
-                Console.WriteLine("");
             }
         }
     }
