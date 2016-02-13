@@ -48,7 +48,17 @@ As of now you have to surround strings with spaces with " e.g. tq /s "League of 
 ```
 tq /s VALUE
 tq -s VALUE
-tq --search VALUE
+tq --search-streams VALUE
+
+```
+###Search Games
+You can search for streams that are categorised under your searchstring using the /g switch
+Please note that the searchstring must exactly match the game name on twitch.tv
+As of now you have to surround strings with spaces with " e.g. tq /g "League of Legends"
+```
+tq /g VALUE
+tq -g VALUE
+tq --search-game VALUE
 ```
 
 ###Retrieve Channel information
