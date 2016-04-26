@@ -25,8 +25,17 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 
 namespace tq.NET {
-    public class Query {
-        protected string queryoptions;
+    public interface IQuery {
+        string querystring { get; set; }
+        string queryoptions { get; set; }
+        string querygroupoptions { get; set; }
+    }
+
+    public interface IQeuryGroupable {
+        IEnumerable<Result> get_grouped_results();
+    }
+
+    public class Query : IQuery{
         public HttpClient client = new HttpClient();
 
         public Query() {
@@ -36,23 +45,34 @@ namespace tq.NET {
             client.DefaultRequestHeaders.Add("Client-ID", "tq.net");
         }
 
+        public string querystring { get; set; }
+
+        public string queryoptions { get; set; }
+
+        public string querygroupoptions { get; set; }
+
         protected Newtonsoft.Json.Linq.JObject get_json() {
             var response = client.GetAsync(this.queryoptions).Result;
-            var dataobjects = response.Content.ReadAsStringAsync().Result; 
-
-            return JsonConvert.DeserializeObject<dynamic>(dataobjects);
-            
+            var dataobjects = response.Content.ReadAsStringAsync().Result;
+            var jsonresponse = JsonConvert.DeserializeObject<dynamic>(dataobjects);
+            if (jsonresponse != null) {
+                return jsonresponse;
+            }
+            else {
+                jsonresponse = new Error("Invalid JSON received from twitch");
+                return JsonConvert.SerializeObject(jsonresponse);
+            }
         }
         public virtual IEnumerable<Result> get_streamlist() {
             throw new NotImplementedException();
         }
     }
 
-
     public class FeaturedStream : Query {
         public FeaturedStream(int limit) {
-            queryoptions = "streams/featured?limit=" + limit;
+            this.queryoptions = "streams/featured?limit=" + limit;
         }
+
         public override IEnumerable<Result> get_streamlist() {
             dynamic json = get_json();
             var resultlist = new List<Result>();
@@ -72,7 +92,7 @@ namespace tq.NET {
 
     public class TopGame : Query {
         public TopGame(int limit) {
-            queryoptions = "games/top?limit=" + limit;
+            this.queryoptions = "games/top?limit=" + limit;
         }
         public override IEnumerable<Result> get_streamlist() {
             dynamic json = get_json();
@@ -89,7 +109,7 @@ namespace tq.NET {
 
     public class SearchStream : Query {
         public SearchStream(string searchstring, int limit) {
-            queryoptions = "search/streams?q=" + searchstring + "&limit=" + limit;
+            this.queryoptions = "search/streams?q=" + searchstring + "&limit=" + limit;
         }
         public override IEnumerable<Result> get_streamlist() {
             dynamic json = get_json();
@@ -109,7 +129,7 @@ namespace tq.NET {
 
     public class SearchGameStream : Query {
         public SearchGameStream(string searchstring, int limit) {
-            queryoptions = "streams?game=" + searchstring + "&limit=" + limit;
+            this.queryoptions = "streams?game=" + searchstring + "&limit=" + limit;
         }
         public override IEnumerable<Result> get_streamlist() {
             dynamic json = get_json();
@@ -129,7 +149,7 @@ namespace tq.NET {
 
     public class ChannelInfo : Query {
         public ChannelInfo(string searchstring, int limit) {
-            queryoptions = "channels/" + searchstring;
+            this.queryoptions = "channels/" + searchstring;
         }
 
         public override IEnumerable<Result> get_streamlist() {
@@ -161,11 +181,10 @@ namespace tq.NET {
 
 
     public class StreamInfo : Query {
-        string streamname;
-
         public StreamInfo(string streamname, int limit) {
-            this.streamname = streamname;
-            queryoptions = "streams/" + this.streamname;
+            this.querystring = streamname;
+            this.queryoptions = "streams/" + this.querystring;
+            this.querygroupoptions = "streams?channel=";
         }
 
         public override IEnumerable<Result> get_streamlist() {
@@ -184,7 +203,7 @@ namespace tq.NET {
                 resultlist.Add(new Error(json.message.ToString()));
             }
             else {
-                resultlist.Add(new Error(string.Format("{0} is offline", this.streamname)));
+                resultlist.Add(new Error(string.Format("{0} is offline", this.querystring)));
             }
             
             return resultlist;
