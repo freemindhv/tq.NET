@@ -112,6 +112,7 @@
     <Compile Include="Query.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="StreamOpener.cs" />
     <Compile Include="TwitchAPIHandler.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -56,7 +56,10 @@ namespace tq.NET {
                 option => Bookmarks.add(option));
 
             options.Add("check-bookmarks|b", "Check which bookmarks are streaming.",
-                option => Bookmarks.get_bookmarks().ForEach(item => queries.Add(new StreamInfo(item, limit))));    
+                option => Bookmarks.get_bookmarks().ForEach(item => queries.Add(new StreamInfo(item, limit))));
+
+            options.Add("open|o=", "Open a stream with livestreamer.",
+                option => StreamOpener.open(option));
 
         }
 
