@@ -97,7 +97,7 @@ namespace tq.NET {
                     continue;
                 }
             }
-            string querystr = queryoptions + this.querystring;
+            string querystr = queryoptions + System.Net.WebUtility.UrlEncode(this.querystring);
             var response = client.GetAsync(querystr).Result;
             var dataobjects = response.Content.ReadAsStringAsync().Result;
             var jsonresponse = JsonConvert.DeserializeObject<dynamic>(dataobjects);
